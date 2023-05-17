@@ -1,0 +1,50 @@
+name: tests
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+  schedule:
+    - cron: "25 22 * * 1"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write
+
+    env:
+      RUSTFLAGS: -D warnings
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+          target: x86_64-unknown-linux-gnu
+          toolchain: nightly
+
+      - name: Install clippy SARIF tools and cargo careful
+        run: cargo install clippy-sarif sarif-fmt cargo-careful
+
+      - name: Check formatting
+        run: cargo fmt --all --check
+
+      - name: Run tests in relase mode
+        run: cargo test --all --all-features --release
+
+      - name: Run tests with careful
+        run: ASAN_OPTIONS="" cargo careful test --all --all-features -Zcareful-sanitizer
+
+      - name: Run clippy
+        run: cargo clippy --all --all-features --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
+
+      - name: Upload clippy analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: rust-clippy-results.sarif
+          wait-for-processing: true
