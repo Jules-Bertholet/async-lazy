@@ -85,7 +85,8 @@ impl<T, Fut, F> Lazy<T, Fut, F> {
     ///
     /// Equivalent to `Lazy::new`, except that it can be used in static
     /// variables.
-    /// /// # Example
+    ///
+    /// # Example
     ///
     /// ```
     /// use std::time::Duration;
