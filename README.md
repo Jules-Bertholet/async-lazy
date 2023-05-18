@@ -11,7 +11,7 @@ This crate offers an API similar to the `Lazy` type from [`async-once-cell` crat
 
 ## Crate features
 
-- `parking_lot`: Enables the corresponding feature in `tokio`, and ssallows constructing `Lazy`s in `const` contexts.
+- `parking_lot`: Enables the corresponding feature in `tokio`, and allows constructing `Lazy`s in `const` contexts.
 - `nightly`: Uses nightly Rust features to implement [`IntoFuture`](https://doc.rust-lang.org/std/future/trait.IntoFuture.html) for references to `Lazy`s, obviating the need to call `force()`.
 
 ## Example
