@@ -7,7 +7,7 @@
 
 An `async` version of [`once_cell::sync::Lazy`](https://docs.rs/once_cell/latest/once_cell/sync/struct.Lazy.html), [`std::sync::OnceLock`](https://doc.rust-lang.org/nightly/std/sync/struct.OnceLock.html) or [`lazy_static`](https://crates.io/crates/lazy_static). Uses [`tokio`](https://github.com/tokio-rs/tokio)'s sychronization primitives.
 
-This crate offers an API similar to the `Lazy` type from [`async-once-cell` crate](https://docs.rs/async-once-cell/latest/async_once_cell/struct.Lazy.html). The difference is that this crate's `Lazy` accetps an `FnOnce() -> impl Future` instead of a `Future`, which makes use in statics easier.
+This crate offers an API similar to the `Lazy` type from [`async-once-cell` crate](https://docs.rs/async-once-cell/latest/async_once_cell/struct.Lazy.html). The difference is that this crate's `Lazy` accepts an `FnOnce() -> impl Future` instead of a `Future`, which makes use in statics easier.
 
 ## Crate features
 
