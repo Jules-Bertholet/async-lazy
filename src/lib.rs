@@ -342,7 +342,7 @@ where
                     permit: ManuallyDrop<SemaphorePermit<'permit>>,
                 }
 
-                impl<'a, 'permit, T, Fut, F> Drop for InitializeOnDrop<'a, 'permit, T, Fut, F> {
+                impl<T, Fut, F> Drop for InitializeOnDrop<'_, '_, T, Fut, F> {
                     fn drop(&mut self) {
                         match self.value {
                             InitializationState::Initializing => {
