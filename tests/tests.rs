@@ -1,5 +1,4 @@
 #![warn(rust_2018_idioms)]
-#![cfg(feature = "parking_lot")]
 
 use core::panic;
 use std::ops::Drop;

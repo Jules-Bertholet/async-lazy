@@ -1,6 +1,6 @@
 [package]
 name = "async-lazy"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "A value which is initialized on the first access, with an async function."
@@ -8,9 +8,6 @@ homepage = "https://github.com/Jules-Bertholet/async-lazy"
 repository = "https://github.com/Jules-Bertholet/async-lazy"
 keywords = ["async", "lazy", "static", "once-cell", "lazy-static"]
 categories = ["asynchronous", "concurrency", "rust-patterns"]
-
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
 # Deprecated, does nothing
