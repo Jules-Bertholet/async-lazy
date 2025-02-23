@@ -66,20 +66,6 @@ pub struct Lazy<T, Fut = Pin<Box<dyn Future<Output = T> + Send>>, F = fn() -> Fu
 }
 
 impl<T, Fut, F> Lazy<T, Fut, F> {
-    /// Creates a new empty `Lazy` instance with the given initializing
-    /// async function.
-    #[must_use]
-    #[inline]
-    pub fn new(init: F) -> Self {
-        Self {
-            value_set: AtomicBool::new(false),
-            value: UnsafeCell::new(LazyData {
-                uninit: ManuallyDrop::new(LazyUninitData::Function(ManuallyDrop::new(init))),
-            }),
-            semaphore: Semaphore::new(1),
-        }
-    }
-
     /// Creates a new `Lazy` instance with the given initializing
     /// async function.
     ///
@@ -97,7 +83,7 @@ impl<T, Fut, F> Lazy<T, Fut, F> {
     ///     1 + 1
     /// }
     ///
-    /// static LAZY : Lazy<u32> = Lazy::const_new(|| Box::pin(async { some_computation().await }));
+    /// static LAZY: Lazy<u32> = Lazy::new(|| Box::pin(async { some_computation().await }));
     ///
     /// #[tokio::main]
     /// async fn main() {
@@ -108,11 +94,9 @@ impl<T, Fut, F> Lazy<T, Fut, F> {
     ///     assert_eq!(result, 2);
     /// }
     /// ```
-    #[cfg(feature = "parking_lot")]
-    #[cfg_attr(feature = "nightly", doc(cfg(feature = "parking_lot")))]
     #[must_use]
     #[inline]
-    pub const fn const_new(init: F) -> Self {
+    pub const fn new(init: F) -> Self {
         Self {
             value_set: AtomicBool::new(false),
             value: UnsafeCell::new(LazyData {
@@ -120,6 +104,14 @@ impl<T, Fut, F> Lazy<T, Fut, F> {
             }),
             semaphore: Semaphore::const_new(1),
         }
+    }
+
+    #[deprecated(note = "use `new` instead")]
+    #[doc(hidden)]
+    #[must_use]
+    #[inline]
+    pub const fn const_new(init: F) -> Self {
+        Self::new(init)
     }
 
     /// Returns `true` if this `Lazy` has been initialized, and `false` otherwise.

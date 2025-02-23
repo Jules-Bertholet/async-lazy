@@ -25,7 +25,7 @@ async fn some_computation() -> u32 {
     1 + 1
 }
 
-static LAZY : Lazy<u32> = Lazy::const_new(|| Box::pin(async { some_computation().await }));
+static LAZY: Lazy<u32> = Lazy::new(|| Box::pin(async { some_computation().await }));
 
 #[tokio::main]
 async fn main() {

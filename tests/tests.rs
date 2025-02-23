@@ -45,7 +45,7 @@ fn force() {
         .build()
         .unwrap();
 
-    static LAZY: Lazy<u32> = Lazy::const_new(|| Box::pin(async { 5 }));
+    static LAZY: Lazy<u32> = Lazy::new(|| Box::pin(async { 5 }));
 
     rt.block_on(async {
         let handle1 = rt.spawn(async { *LAZY.force().await });
@@ -73,7 +73,7 @@ fn force_cancel() {
         .build()
         .unwrap();
 
-    static LAZY: Lazy<u32> = Lazy::const_new(|| Box::pin(async { 5 }));
+    static LAZY: Lazy<u32> = Lazy::new(|| Box::pin(async { 5 }));
 
     rt.block_on(async {
         let handle1 = rt.spawn(async {
@@ -105,7 +105,7 @@ fn force_panic() {
         .build()
         .unwrap();
 
-    static LAZY: Lazy<u32> = Lazy::const_new(|| Box::pin(async { panic!() }));
+    static LAZY: Lazy<u32> = Lazy::new(|| Box::pin(async { panic!() }));
 
     rt.block_on(async {
         let handle1 = rt.spawn(async { *LAZY.force().await });
@@ -128,7 +128,7 @@ fn force_panic() {
 fn force_and_get() {
     let rt = runtime::Builder::new_current_thread().build().unwrap();
 
-    static LAZY: Lazy<u32> = Lazy::const_new(|| Box::pin(async { 5 }));
+    static LAZY: Lazy<u32> = Lazy::new(|| Box::pin(async { 5 }));
 
     rt.block_on(async {
         let _ = rt.spawn(async { LAZY.force().await }).await;
@@ -139,7 +139,7 @@ fn force_and_get() {
 
 #[test]
 fn get_uninit() {
-    static LAZY: Lazy<u32> = Lazy::const_new(|| Box::pin(async { panic!() }));
+    static LAZY: Lazy<u32> = Lazy::new(|| Box::pin(async { panic!() }));
     let uninit = LAZY.get();
     assert!(uninit.is_none());
 }
@@ -149,7 +149,7 @@ fn get_uninit() {
 fn test_nightly() {
     let rt = runtime::Builder::new_current_thread().build().unwrap();
 
-    static LAZY: Lazy<u32> = Lazy::const_new(|| Box::pin(async { 42 }));
+    static LAZY: Lazy<u32> = Lazy::new(|| Box::pin(async { 42 }));
 
     rt.block_on(async {
         let _ = rt.spawn(async { (&LAZY).await }).await;

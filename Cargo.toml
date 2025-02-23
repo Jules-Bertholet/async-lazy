@@ -1,6 +1,6 @@
 [package]
 name = "async-lazy"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "A value which is initialized on the first access, with an async function."
@@ -13,16 +13,16 @@ categories = ["asynchronous", "concurrency", "rust-patterns"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-# Required for const `Lazy` constructor
-parking_lot = ["tokio/parking_lot"]
+# Deprecated, does nothing
+parking_lot = []
 # Required for `IntoFuture` impls
 nightly = []
 
 [dependencies]
-tokio = { version = "1.28.1", features = ["sync"] }
+tokio = { version = "1.43.0", features = ["sync"] }
 
 [dev-dependencies]
-futures = "0.3.28"
+futures = "0.3.31"
 tokio = { version = "1", features = ["full", "test-util"] }
 
 [package.metadata.docs.rs]
