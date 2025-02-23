@@ -19,7 +19,7 @@ jobs:
       RUSTFLAGS: -D warnings
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -28,8 +28,8 @@ jobs:
           target: x86_64-unknown-linux-gnu
           toolchain: nightly
 
-      - name: Install clippy SARIF tools and cargo careful
-        run: cargo install clippy-sarif sarif-fmt cargo-careful
+      - name: Install cargo careful
+        run: curl --user-agent "cargo-quickinstall/0.3.9 client (alsuren@gmail.com)" --location --silent --show-error --fail "https://github.com/cargo-bins/cargo-quickinstall/releases/download/cargo-careful-0.4.3/cargo-careful-0.4.3-x86_64-unknown-linux-gnu.tar.gz" | tar -xzvvf - -C ~/.cargo/bin
 
       - name: Check formatting
         run: cargo fmt --all --check
@@ -41,10 +41,5 @@ jobs:
         run: ASAN_OPTIONS="" cargo careful test --all --all-features -Zcareful-sanitizer
 
       - name: Run clippy
-        run: cargo clippy --all --all-features --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
+        run: cargo clippy --all --all-features
 
-      - name: Upload clippy analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: rust-clippy-results.sarif
-          wait-for-processing: true
